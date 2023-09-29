@@ -31,10 +31,19 @@
         
         // Create psychedelic effects
         for(let i = 0; i < bufferLength; i++) {
-          const barHeight = dataArray[i];
+          let barHeight = dataArray[i];
+          
+          // Amplification
+          barHeight *= 3; // Adjust this multiplier to amplify the signal
+
+          // Limiting barHeight to the canvas height
+          barHeight = Math.min(barHeight, canvas.height);
+          
           const hue = i + 100 * Math.sin(i);
           ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
-          ctx.fillRect(i * 4, canvas.height - barHeight, 2, barHeight);
+          
+          // Making bars taller and more vibrant by modifying the fillRect parameters
+          ctx.fillRect(i * 6, canvas.height - barHeight, 4, barHeight);
         }
       }
       
