@@ -3,7 +3,7 @@
 
   button.addEventListener("click", function() {
     button.style.display = 'none';
-    
+
     navigator.mediaDevices.getUserMedia({ audio: true })
     .then(stream => {
       const audioContext = new AudioContext();
@@ -28,22 +28,28 @@
         // Clear the canvas
         ctx.fillStyle = 'black';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
+
         // Create psychedelic effects
         for(let i = 0; i < bufferLength; i++) {
           let barHeight = dataArray[i];
           
-          // Amplification
-          barHeight *= 3; // Adjust this multiplier to amplify the signal
-
+          // Dynamic Amplification
+          barHeight = barHeight * 7 * (i / bufferLength);
+          
           // Limiting barHeight to the canvas height
           barHeight = Math.min(barHeight, canvas.height);
           
-          const hue = i + 100 * Math.sin(i);
+          const hue = i + 180 * Math.sin(i);
           ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
-          
-          // Making bars taller and more vibrant by modifying the fillRect parameters
-          ctx.fillRect(i * 6, canvas.height - barHeight, 4, barHeight);
+
+          // Adding shapes and elements for more variety
+          if (i % 5 === 0) {
+            ctx.beginPath();
+            ctx.arc(i * 6, canvas.height - barHeight, 5, 0, Math.PI * 2);
+            ctx.fill();
+          } else {
+            ctx.fillRect(i * 6, canvas.height - barHeight, 4, barHeight);
+          }
         }
       }
       
